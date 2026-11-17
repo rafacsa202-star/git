@@ -1,0 +1,143 @@
+
+# ==================================
+#       URNA ELETRONICA EM PYTHON
+# ==================================
+
+# Candidatos
+candidatos = {
+    "10": "João",
+    "20": "Maria",
+    "30": "Pedro"
+}
+
+# Contagem dos votos
+votos = {
+    "10": 0,
+    "20": 0,
+    "30": 0,
+    "branco": 0
+}
+
+total_votos = 0
+
+print("=" * 40)
+print("       BEM-VINDO A URNA ELETRONICA")
+print("=" * 40)
+
+while True:
+
+    print("\n1 - VOTAR")
+    print("2 - APURAR RESULTADOS")
+    print("3 - ENCERRAR VOTACAO")
+
+    opcao = input("\nEscolha uma opcao: ")
+
+    # VOTAR
+    if opcao == "1":
+
+        print("\n========== CANDIDATOS ==========")
+
+        for numero, nome in candidatos.items():
+            print(f"{numero} - {nome}")
+
+        print("0 - VOTO EM BRANCO")
+
+        numero = input("\nDigite o numero do candidato: ")
+
+        if numero in candidatos:
+
+            print("\nCandidato:", candidatos[numero])
+
+            confirmar = input("Confirmar voto? (S/N): ").upper()
+
+            if confirmar == "S":
+                votos[numero] += 1
+                total_votos += 1
+                print("\nVOTO CONFIRMADO!")
+
+            else:
+                print("\nVoto cancelado.")
+
+        elif numero == "0":
+
+            confirmar = input(
+                "Confirmar voto em branco? (S/N): "
+            ).upper()
+
+            if confirmar == "S":
+                votos["branco"] += 1
+                total_votos += 1
+                print("\nVOTO EM BRANCO CONFIRMADO!")
+
+            else:
+                print("\nVoto cancelado.")
+
+        else:
+            print("\nNUMERO INVALIDO! Tente novamente.")
+
+    # APURAR RESULTADOS
+    elif opcao == "2":
+
+        print("\n========== RESULTADOS ==========")
+
+        if total_votos == 0:
+            print("Nenhum voto registrado.")
+
+        else:
+
+            for numero, nome in candidatos.items():
+
+                quantidade = votos[numero]
+                porcentagem = (quantidade / total_votos) * 100
+
+                print(f"\n{nome} ({numero})")
+                print(f"Votos: {quantidade}")
+                print(f"Porcentagem: {porcentagem:.2f}%")
+
+            quantidade_brancos = votos["branco"]
+
+            porcentagem_brancos = (
+                quantidade_brancos / total_votos
+            ) * 100
+
+            print("\nVOTOS EM BRANCO")
+            print(f"Quantidade: {quantidade_brancos}")
+            print(f"Porcentagem: {porcentagem_brancos:.2f}%")
+
+            # Identificar vencedor
+            maior_votacao = max(
+                votos[numero] for numero in candidatos
+            )
+
+            vencedores = [
+                nome
+                for numero, nome in candidatos.items()
+                if votos[numero] == maior_votacao
+            ]
+
+            print("\n========== VENCEDOR ==========")
+
+            if maior_votacao == 0:
+                print("Nenhum candidato recebeu votos.")
+
+            elif len(vencedores) > 1:
+                print("EMPATE ENTRE:", ", ".join(vencedores))
+
+            else:
+                print("CANDIDATO ELEITO:", vencedores[0])
+
+            print("\nTotal de votos:", total_votos)
+
+    # ENCERRAR
+    elif opcao == "3":
+
+        print("\n================================")
+        print("      VOTACAO ENCERRADA!")
+        print("================================")
+        print("Total de votos:", total_votos)
+        print("Obrigado por participar!")
+
+        break
+
+    else:
+        print("\nOPCAO INVALIDA! Escolha novamente.")
